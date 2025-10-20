@@ -1,0 +1,51 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+
+}
+
+.acc_managment{
+    font-weight: bolder;
+    font-size: larger;
+    align-items: center;
+     width: 800px;
+      height: 150px;
+      background-color: whitesmoke;
+      border: 2px solid whitesmoke;
+      border-radius: 15px; 
+      padding: 20px;
+      margin: 0 auto;
+      margin-bottom: 2%;
+}
+
+.Preferences{
+    align-items: center;
+     width: 800px;
+      height: 150px;
+      background-color: whitesmoke;
+      border: 2px solid whitesmoke;
+      border-radius: 15px; 
+      padding: 20px;
+      margin: 0 auto;
+      margin-bottom: 2%;
+}
+
+.acc_managment ul{
+     list-style-type: none;
+    
+}
+
+.Preferences ul{
+    list-style-type: none;
+
+}
+
+.acc_managment li {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+}
+
+.acc_managment li a{
+    backround-color: purple;
+
+}

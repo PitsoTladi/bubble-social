@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center;     /* vertical */
+    background: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.login {
+    width: 700px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.login h2 {
+    font-weight: bold;
+    font-family: 'Dancing Script', cursive;
+}
+
+.login-form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login input {
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 250px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+label {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+}
+
+.login button {
+    background-color: aqua;
+    width: 100%;
+    max-width: 250px;
+    color: black;
+    cursor: pointer;
+    padding: 2%;
+    border: none;
+    transition: background-color 0.3s;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.login button:hover {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.login a {
+    text-align: right;
+    text-justify: right;
+    display: inline-block;
+    margin-top: 10px;
+    color: #6a0dad;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+.hr-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.hr-text::before,
+.hr-text::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #000;
+}
+
+.hr-text::before {
+    margin-right: 0.5em;
+}
+
+.hr-text::after {
+    margin-left: 0.5em;
+}
+
+
+.thought-bubble-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    gap: 6px;               
+    cursor: default;
+    user-select: none;
+    font-family: 'Dancing Script', cursive;
+    margin: 0 auto 20px auto; 
+    width: fit-content;
+}
+
+
+.thought-bubble-icon {
+    font-size: 36px;
+   /* background-color: #6a0dad; */
+    color: white;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+}
+.thought-bubble-container span:last-child {
+    color: #6a0dad;  
+    font-size:xx-large;
+}

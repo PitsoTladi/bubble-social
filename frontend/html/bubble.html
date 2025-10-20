@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles-css/styling.css" />
+    <title>Bubble Social Media</title>
+</head>
+<body>
+
+?>
+
+<div class="login" id="sign-up_form">
+    <form method="post" enctype="multipart/form-data" action = '../htmlTemplates/sign-up.php'>
+        <div class="thought-bubble-container" title="Bubble">
+            <div class="thought-bubble-icon">&#128172;</div>
+            <span>bubble</span>
+        </div>
+
+        <input type="text" required placeholder="Full name" name="fname" /><br />
+        <input type="email" required placeholder="Email" name="email" /><br />
+        <input type="password" required placeholder="Password" name="password" /><br />
+        <input type="password" required placeholder="Confirm Password" name="password_confirm" /><br />
+
+        <p style="color: red;"><?php if (!empty($field)) echo htmlspecialchars($field); ?></p>
+
+        <label>Profile image (optional):</label>
+        <input type="file" accept="image/*" name="p-pic" /><br />
+
+        <button type="submit">Sign up</button>
+        <div class="hr-text">Already Have An Account?</div>
+        <a href="bubble-login.php">Login</a>
+    </form>
+</div>
+</body>
+</html>
