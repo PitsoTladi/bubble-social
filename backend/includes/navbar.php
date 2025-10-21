@@ -1,7 +1,9 @@
 <?php
-// navbar.php - Navigation bar component
-?>
 
+?>
+<head>
+  <link rel = 'stylesheet' href = '../../frontend/nav-barStyle.css'>
+</head>
 <nav class="navbar">
   <div class="navbar-left">
     <div class="thought-bubble-container" title="Bubble">
@@ -18,6 +20,6 @@
     <a href="#" class="icon" title="Messages">&#9993;</a>
     <a href="user-profile.php" class="icon" title="Profile">&#128100;</a>
     <a href="#" class="icon" title="Notifications">&#128276;</a>
-    <a href="#" class="icon" title="Settings">&#9881;</a>
+    <a href="../pages/settings-page.php" class="icon" title="Settings">&#9881;</a>
   </div>
 </nav>

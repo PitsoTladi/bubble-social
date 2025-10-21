@@ -4,7 +4,7 @@ include '../sql/connection.php';
 
 // Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: bubble-login.php');
+    header('Location: ../auth/bubble-login.php');
     exit;
 }
 

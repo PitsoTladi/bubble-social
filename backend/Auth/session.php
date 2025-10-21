@@ -6,5 +6,5 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 
-<h1>Welcome! You are logged in.</h1>
+
 <!--<a href="logout.php">Logout</a>-->

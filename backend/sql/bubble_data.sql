@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2025 at 09:30 AM
+-- Generation Time: Oct 20, 2025 at 02:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `bubble_data`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feed`
+--
+
+CREATE TABLE `feed` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `posted_by` int(11) NOT NULL,
+  `like_count` int(11) DEFAULT 0,
+  `share_count` int(11) DEFAULT 0,
+  `is_saved` tinyint(1) DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -51,29 +68,27 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `password_resets`
---
-
-CREATE TABLE `password_resets` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `reset_token` varchar(255) NOT NULL,
-  `expires_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `posts`
 --
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
   `content` text NOT NULL,
-  `image_path` varchar(255) DEFAULT NULL,
-  `timestamp` datetime DEFAULT current_timestamp()
+  `time_posted` datetime DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL,
+  `image_path` varchar(500) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `content`, `time_posted`, `user_id`, `image_path`, `timestamp`) VALUES
+(13, 'dreams are the wings of the mind you can fly\r\n', '2025-10-20 11:05:19', 15, NULL, '2025-10-20 09:05:19'),
+(20, 'im wishing on a star', '2025-10-20 12:08:16', 14, NULL, '2025-10-20 10:08:16'),
+(22, 'what a man what a night', '2025-10-20 12:49:12', 12, '68f613a8d704d_527d94df492c87037c2f424374de9056.jpg', '2025-10-20 10:49:12'),
+(23, 'Son we live in a world with walls, walls that have to be protected by man with guns. Who is gonna do it you, you lieutenant Weinberg? I have a responsibility greater than you could possibly ever fathom. You weep for Santiago, and you curse the marines, you have that luxury, the luxury of not knowing what I know, that Santiago\'s death while tragic probably saved lives and my existence while grotesque and incomprehensible to you saves lives!!!you don\'t want the truth because deep down in places you don\'t talk about at parties, you want me on that wall you need me on that wall.we use words like honor code and respect we use these words as the backbone of a life spent protecting something,you use them as a punchline!!!', '2025-10-20 14:31:51', 12, '68f62bb736c87_Colonel Nathan R_ Jessup - \'A Few Good Men\' (1).jpg', '2025-10-20 12:31:51');
 
 -- --------------------------------------------------------
 
@@ -86,25 +101,35 @@ CREATE TABLE `users` (
   `full_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `security_question` varchar(255) NOT NULL,
+  `security_answer` varchar(255) DEFAULT NULL,
+  `remember_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `full_name`, `email`, `password_hash`, `profile_picture`) VALUES
-(1, 'pitso Tladi', '4023030430@me.com', '$2y$10$8Fi1OZy/vSxCutT7xer..ee1nnGvzvd.LdSKy5Utw80KI33pcxFNy', 'OIP.webp'),
-(3, 'Sade adu', 'saduAdu@gmail.com', '$2y$10$HYK/GLXvj7ZSEJYQ6Csk/OecOC2ZDFJIHfLTJkeTr1yLAWRsV2qWe', '0189e8d36d8507d0d19f884ba5fa7348.jpg'),
-(4, 'Lauryn Hill', 'Lboogie@refugeeCamp.us', '$2y$10$kugDDSTv326YW0BM3jaKpudy7q601JUAkzv9CB4axCL4WhK5fpMGC', '057a2d63b2c2f3dd595f0254f22f3543.jpg'),
-(5, 'Malcom Little', 'MaleekAlshabaz@noi.org', '$2y$10$CrSnpOrmXL4uEPIM36wvY.sHzPVFIf9J/xcTYAQEUxyEPp/SSZBg2', ''),
-(8, 'Ernesto Che', 'Cheguevara@something.com', '$2y$10$6HdssFyYYsSUTyf44TdfLedRa3IRkod/BAe0XXmWkO1iXLIaoV5Yu', 'dedf0a5b5d5649b7ef91232052cd477d.jpg'),
-(9, 'illa Touporia', 'elMetador@espaniol.ufc', '$2y$10$Xvz2zJa0q5bBUs9OcXxz2ObzOFWXd.hiQFKMRc5.YksoB82NZgyzO', '527d94df492c87037c2f424374de9056.jpg'),
-(10, 'frank lucas', 'frankwhite@myOrg.ny', '$2y$10$YowXZTTunruaEmXQ28A5Du5v8ko.caQLSnahyfZcjomkTkDoyfEwS', 'e32d9f7d7ae9f16ec7cfe7ea71404fe4.jpg');
+INSERT INTO `users` (`id`, `full_name`, `email`, `password_hash`, `profile_picture`, `security_question`, `security_answer`, `remember_token`) VALUES
+(12, 'Pitso Tladi', 'pitsotladi71@gmail.com', '$2y$10$Lia0F6iXjt5RqiMrqdRWkOWe/I4Y9jZgPJAAKK/U85uI6U4tRe33m', 'OIP.webp', 'city of birth', 'Johannesburg', NULL),
+(13, 'george orwell', 'georgeOrwell@oceana.gov', '$2y$10$gwB5LU8riewZiXHYYl7DKumXgqqe8tOapLBE9RPYGan62WSuuUI3u', 'download.jpg', 'city of birth', 'oceana', NULL),
+(14, 'max Halloway', 'maxblessed@ufc.org', '$2y$10$ZuT979iZzJdEdY.qWxaaRuwM8ryR6H9aybxjBiaCWZN30XN9JL9AC', '527d94df492c87037c2f424374de9056.jpg', 'favourite team', 'Barcelona FC', NULL),
+(15, 'winston churchil', 'winstonchurch@ww2.com', '$2y$10$lsqr.lSb5RBG7VHS6E.XQ.13CfxHpoQgcTOnb2rnfoJyzAU2VdMwi', 'Winston Churchill - Wikipedia.jpg', 'favourite team', 'Burnley', NULL),
+(16, 'christiano ronaldo', 'christiano@cr7.co.za', '$2y$10$nhUYLm.AXt1pxvQYDfa.uOfNItFHFbt8OyStPenC3ih8AxrkpjcbC', '', 'favourite_team', 'Real Madrid', NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `feed`
+--
+ALTER TABLE `feed`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `posted_by` (`posted_by`);
 
 --
 -- Indexes for table `friend_requests`
@@ -123,18 +148,11 @@ ALTER TABLE `messages`
   ADD KEY `receiver_id` (`receiver_id`);
 
 --
--- Indexes for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `fk_user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -148,6 +166,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `feed`
+--
+ALTER TABLE `feed`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `friend_requests`
 --
 ALTER TABLE `friend_requests`
@@ -157,29 +181,31 @@ ALTER TABLE `friend_requests`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `password_resets`
---
-ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `feed`
+--
+ALTER TABLE `feed`
+  ADD CONSTRAINT `feed_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `feed_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `feed_ibfk_3` FOREIGN KEY (`posted_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `friend_requests`
@@ -196,16 +222,10 @@ ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
