@@ -104,6 +104,12 @@
     }
   </style>
 </head>
+
+<?php
+  echo '<br>';
+ include '../includes/navbar.php';
+
+ ?>
 <body>
 
   <div class="wrapper">
@@ -139,25 +145,39 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Change Email Address</h2>
-      <form action="new-mail.php" method="POST">
+      <form action="change_mail.php" method="POST">
         <label for="newEmail">New Email:</label><br />
         <input type="email" id="newEmail" name="newEmail" required /><br /><br />
-        <button type="submit">Submit</button>
+        <button type="submit" name = 'newEmail_confirm'>Submit</button>
       </form>
     </div>
   </div>
 
   <!-- New Password Modal -->
+   <!-- New Password Modal -->
   <div id="modal-new-pass" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Change Password</h2>
-      <form action="pass.php" method="POST">
+      <form action="../includes/change_password.php" method="POST">
         <label for="currentPass">Current Password:</label><br />
         <input type="password" id="currentPass" name="currentPass" required /><br /><br />
+
         <label for="newPass">New Password:</label><br />
         <input type="password" id="newPass" name="newPass" required /><br /><br />
-        <button type="submit">Submit</button>
+
+        <label for="newPass-confirm">Confirm New Password:</label><br />
+        <input type="password" id="newPass-confirm" name="newPass-confirm" required /><br /><br />
+
+        <?php if (!empty($err_msg)): ?>
+          <p style="color: red;"><?php echo htmlspecialchars($err_msg); ?></p>
+        <?php endif; ?>
+
+        <?php if (!empty($success_msg)): ?>
+          <p style="color: green;"><?php echo htmlspecialchars($success_msg); ?></p>
+        <?php endif; ?>
+
+        <button type="submit" name="newpassbtn">Submit</button>
       </form>
     </div>
   </div>
