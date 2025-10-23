@@ -3,7 +3,7 @@ session_start();
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../pages/profile.php");
+    header('Location: ../pages/profile.php');
     exit;
 }
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($password, $user['password_hash'])) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
-            header("Location: ../pages/user-profile.php");
+            header("Location: ../pages/profile.php");
             exit;
         } else {
             $error_message = "Incorrect password.";

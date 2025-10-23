@@ -145,15 +145,18 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Change Email Address</h2>
-      <form action="change_mail.php" method="POST">
+      <form action="../includes/change_mail.php" method="POST">
         <label for="newEmail">New Email:</label><br />
         <input type="email" id="newEmail" name="newEmail" required /><br /><br />
-        <button type="submit" name = 'newEmail_confirm'>Submit</button>
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'success'): ?>
+    <p style="color: green;">Email successfully updated!</p>
+    <?php endif; ?>
+        <button type="submit" name="newEmail_confirm" style="background-color: purple; color: white;padding:8px 16px; border:none; cursor:pointer;">Submit</button>
+
       </form>
     </div>
   </div>
 
-  <!-- New Password Modal -->
    <!-- New Password Modal -->
   <div id="modal-new-pass" class="modal">
     <div class="modal-content">
@@ -177,7 +180,7 @@
           <p style="color: green;"><?php echo htmlspecialchars($success_msg); ?></p>
         <?php endif; ?>
 
-        <button type="submit" name="newpassbtn">Submit</button>
+        <button type="submit" name="newpassbtn" style="background-color: purple; color: white;padding:8px 16px; border:none; cursor:pointer;">Submit</button>
       </form>
     </div>
   </div>
@@ -195,7 +198,7 @@
       </form>
     </div>
   </div>
-  <?php //include '../includes/deleteAccount.php' ?>
+  
 
   <!-- Logout Modal -->
    <div id="modal-logout" class="modal">
@@ -205,15 +208,15 @@
         <p>Are you sure you want to logout?</p>
         <div style="text-align: right;">
           <form action = '../includes/logout.php' method="POST" style="display:inline;">
-            <button type="submit" name="cancel" style="margin-right:10px;">Cancel</button>
+            <button type="submit" name="cancel" style="background-color: purple; color: white;padding:8px 16px; border:none; cursor:pointer; margin-right: 10px">Cancel</button>
           </form>
           <form action = '../includes/logout.php' method="POST" style="display:inline;">
-            <button type="submit" name="logoutbtn">Logout</button>
+            <button type="submit" name="logoutbtn" style="background-color: purple; color: white;padding:8px 16px; border:none; cursor:pointer;">Logout</button>
           </form>
         </div>
       </div>
     </div>
-  <
+  
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
