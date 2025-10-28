@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2025 at 03:07 PM
+-- Generation Time: Oct 28, 2025 at 09:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,13 +59,11 @@ CREATE TABLE `friend_requests` (
 
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
-  `receiver_id` int(11) NOT NULL,
-  `content` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `is_read` tinyint(1) DEFAULT 0,
-  `reply_to_id` int(11) DEFAULT NULL,
-  `message_type` varchar(20) DEFAULT 'text'
+  `sender_id` int(11) DEFAULT NULL,
+  `sender_name` varchar(100) DEFAULT NULL,
+  `receiver_id` int(11) DEFAULT NULL,
+  `message_content` text DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -154,10 +152,7 @@ ALTER TABLE `friend_requests`
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_sender` (`sender_id`),
-  ADD KEY `fk_receiver` (`receiver_id`),
-  ADD KEY `fk_reply_to` (`reply_to_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `posts`
@@ -225,14 +220,6 @@ ALTER TABLE `feed`
 ALTER TABLE `friend_requests`
   ADD CONSTRAINT `friend_requests_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `friend_requests_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `messages`
---
-ALTER TABLE `messages`
-  ADD CONSTRAINT `fk_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `fk_reply_to` FOREIGN KEY (`reply_to_id`) REFERENCES `messages` (`id`),
-  ADD CONSTRAINT `fk_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `posts`
