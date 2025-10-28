@@ -25,8 +25,8 @@ if (isset($_GET['username'])) {
     <meta charset="UTF-8">
     <title>Messaging Interface</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 30px; margin-top : 50px }
-        .chat-box {;background: white; padding: 20px; width: 400px; margin: 5% auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 600px; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 30px; margin-top: 50px; }
+        .chat-box { background: white; padding: 20px; width: 600px; margin: 5% auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .message-container { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
         .msg { margin: 5px 0; padding: 8px; border-radius: 5px; }
         .sent { background: #d1ffd6; text-align: right; }
@@ -38,7 +38,8 @@ if (isset($_GET['username'])) {
 </head>
 <body>
 
-<?php include '../includes/navbar.php' ?>
+<?php include '../includes/navbar.php'; ?>
+
 <div class="chat-box">
     <h2>Private Messaging</h2>
 
@@ -94,5 +95,6 @@ if (receiver_id) {
     });
 }
 </script>
+
 </body>
 </html>
