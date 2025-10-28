@@ -1,167 +1,98 @@
+<?php
+
+include '../sql/connection.php';
+include '../auth/session.php';
+
+$user = $_SESSION['user_id'];
+
+// Handle selecting a receiver
+$receiver_name = '';
+$receiver_id = null;
+
+if (isset($_GET['username'])) {
+    $receiver_name = trim($_GET['username']);
+    $stmt = $connection->prepare("SELECT id FROM users WHERE full_name = ?");
+    $stmt->bind_param("s", $receiver_name);
+    $stmt->execute();
+    $stmt->bind_result($receiver_id);
+    $stmt->fetch();
+    $stmt->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Messenger Style Chat</title>
-    <link rel="stylesheet" href="../../frontend/styles-css/messages.css">
+    <meta charset="UTF-8">
+    <title>Messaging Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 30px; margin-top : 50px }
+        .chat-box {;background: white; padding: 20px; width: 400px; margin: 5% auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 600px; }
+        .message-container { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+        .msg { margin: 5px 0; padding: 8px; border-radius: 5px; }
+        .sent { background: #d1ffd6; text-align: right; }
+        .received { background: #f0f0f0; text-align: left; }
+        .username-input, .message-input { width: 100%; padding: 8px; margin: 5px 0; }
+        .send-btn { width: 100%; padding: 10px; background: purple; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        .send-btn:hover { background: #0056b3; }
+    </style>
 </head>
 <body>
-  <?php
-    include '../sql/connection.php';
-  
-  ?>
-  <?php include '../includes/navbar.php'?>
-  
-  <div id="app">
-    <!-- Contacts List -->
-    <aside id="contacts-panel">
-      <header>Messages</header>
-      <div id="contacts-list">
-        <div class="contact active" data-name="Alice" style="--avatar-color:#4b7bec;">
-          <div class="avatar" style="background-color:#4b7bec;">A</div>
-          <div class="details">
-            <div class="name">Alice</div>
-            <div class="last-message">Hey, how are you?</div>
-          </div>
-        </div>
-        <div class="contact" data-name="Bob" style="--avatar-color:#20bf6b;">
-          <div class="avatar" style="background-color:#20bf6b;">B</div>
-          <div class="details">
-            <div class="name">Bob</div>
-            <div class="last-message">Don’t forget the meeting.</div>
-          </div>
-        </div>
-        <div class="contact" data-name="Charlie" style="--avatar-color:#fc5c65;">
-          <div class="avatar" style="background-color:#fc5c65;">C</div>
-          <div class="details">
-            <div class="name">Charlie</div>
-            <div class="last-message">Are we still on for today?</div>
-          </div>
-        </div>
-        <div class="contact" data-name="Diana" style="--avatar-color:#a55eea;">
-          <div class="avatar" style="background-color:#a55eea;">D</div>
-          <div class="details">
-            <div class="name">Diana</div>
-            <div class="last-message">Thanks for the help!</div>
-          </div>
-        </div>
-      </div>
-    </aside>
 
-    <!-- Chat Panel -->
-    <section id="chat-panel">
-      <header id="chat-header">
-        <div class="avatar" style="background-color:#4b7bec;">A</div>
-        <div class="name">Alice</div>
-      </header>
+<?php include '../includes/navbar.php' ?>
+<div class="chat-box">
+    <h2>Private Messaging</h2>
 
-      <div id="messages-container">
-        <div class="message received">Hey, how are you?</div>
-        <div class="message sent">I'm good, thanks! And you?</div>
-        <div class="message received">Doing great, working on a project.</div>
-      </div>
+    <form method="get">
+        <input type="text" name="username" class="username-input" placeholder="Enter username..." value="<?= htmlspecialchars($receiver_name) ?>" required>
+        <button type="submit" class="send-btn">Chat</button>
+    </form>
 
-      <form id="input-area" onsubmit="sendMessage(event)">
-        <input
-          type="text"
-          id="message-input"
-          placeholder="Type a message..."
-          autocomplete="off"
-          required
-        />
-        <button type="submit" id="send-btn">Send</button>
-      </form>
-    </section>
-  </div>
+    <?php if ($receiver_id): ?>
+        <h3>Chat with <?= htmlspecialchars($receiver_name) ?></h3>
+        <div class="message-container" id="messages"></div>
 
-  <script>
-    const contacts = document.querySelectorAll('.contact');
-    const chatHeader = document.getElementById('chat-header');
-    const messagesContainer = document.getElementById('messages-container');
-    const messageInput = document.getElementById('message-input');
+        <form id="messageForm">
+            <input type="hidden" name="receiver_id" value="<?= $receiver_id ?>">
+            <textarea name="message_content" class="message-input" placeholder="Type your message..." required></textarea>
+            <button type="submit" class="send-btn">Send</button>
+        </form>
+    <?php elseif ($receiver_name): ?>
+        <p style="color:red;">User not found.</p>
+    <?php endif; ?>
+</div>
 
-    const messagesData = {
-      Alice: [
-        { type: 'received', text: 'Hey, how are you?' },
-        { type: 'sent', text: "I'm good, thanks! And you?" },
-        { type: 'received', text: 'Doing great, working on a project.' },
-      ],
-      Bob: [
-        { type: 'received', text: 'Don’t forget the meeting.' },
-        { type: 'sent', text: 'I won’t, thanks!' },
-      ],
-      Charlie: [
-        { type: 'received', text: 'Are we still on for today?' },
-      ],
-      Diana: [
-        { type: 'sent', text: 'Thanks for the help!' },
-        { type: 'received', text: 'You’re welcome!' },
-      ],
-    };
+<script>
+// Auto-load messages every 2 seconds
+let receiver_id = "<?= $receiver_id ?>";
+let user = "<?= $user ?>";
 
-    // Load messages for selected contact
-    function loadMessages(name) {
-      messagesContainer.innerHTML = '';
-      chatHeader.querySelector('.avatar').textContent = name[0];
-      chatHeader.querySelector('.avatar').style.backgroundColor = getComputedStyle(document.querySelector(`.contact[data-name="${name}"] .avatar`)).backgroundColor;
-      chatHeader.querySelector('.name').textContent = name;
-
-      const msgs = messagesData[name] || [];
-      msgs.forEach(({type, text}) => {
-        const div = document.createElement('div');
-        div.classList.add('message', type);
-        div.textContent = text;
-        messagesContainer.appendChild(div);
-      });
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+if (receiver_id) {
+    function loadMessages() {
+        fetch(`fetch_messages.php?receiver_id=${receiver_id}&user=${user}`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('messages').innerHTML = html;
+            });
     }
 
-    // Switch active contact
-    contacts.forEach(contact => {
-      contact.addEventListener('click', () => {
-        contacts.forEach(c => c.classList.remove('active'));
-        contact.classList.add('active');
-        loadMessages(contact.dataset.name);
-      });
+    setInterval(loadMessages, 2000);
+    loadMessages();
+
+    // Handle sending new message
+    document.getElementById('messageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('send_message.php', {
+            method: 'POST',
+            body: formData
+        }).then(res => res.text())
+          .then(() => {
+              this.reset();
+              loadMessages();
+          });
     });
-
-    // Send message
-    function sendMessage(e) {
-      e.preventDefault();
-      const text = messageInput.value.trim();
-      if (!text) return;
-
-      const currentContact = document.querySelector('.contact.active').dataset.name;
-
-      // Add sent message UI
-      const sentMsg = document.createElement('div');
-      sentMsg.classList.add('message', 'sent');
-      sentMsg.textContent = text;
-      messagesContainer.appendChild(sentMsg);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-      // Add to data
-      messagesData[currentContact].push({type: 'sent', text});
-
-      messageInput.value = '';
-      messageInput.focus();
-
-      // Simulate reply
-      setTimeout(() => {
-        const replyText = "Thanks for your message!";
-        const receivedMsg = document.createElement('div');
-        receivedMsg.classList.add('message', 'received');
-        receivedMsg.textContent = replyText;
-        messagesContainer.appendChild(receivedMsg);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-        messagesData[currentContact].push({type: 'received', text: replyText});
-      }, 1200);
-    }
-
-    // Initial load
-    loadMessages('Alice');
-  </script>
+}
+</script>
 </body>
 </html>
